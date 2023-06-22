@@ -7,7 +7,7 @@ class YahtzeeAgent:
         self.scorecard = utils.BLANK_SCORECARD
         self.opponent_scorecard = utils.BLANK_SCORECARD
 
-    def roll_dice(self, dice_values, nrolls)->list[bool]:
+    def roll_dice(self, dice_values, nrolls)->list:
         """Returns a list of booleans indicating which dice to re-roll."""
         raise NotImplementedError
 

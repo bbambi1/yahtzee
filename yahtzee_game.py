@@ -14,11 +14,11 @@ class Game:
     def play(self):
         """Plays a game of Yahtzee between two agents."""
         self.agents[0].scorecard = utils.BLANK_SCORECARD.copy()
-        self.agents[1].scorecard = utils.BLANK_SCORECARD.copy()
         self.agents[0].opponent_scorecard = utils.BLANK_SCORECARD.copy()
+        self.agents[1].scorecard = utils.BLANK_SCORECARD.copy()
         self.agents[1].opponent_scorecard = utils.BLANK_SCORECARD.copy()
 
-        for i in range(utils.N_TURNS):
+        for i in range(2 * utils.N_TURNS):
 
             self.dice_values = [random.randint(1, utils.N_FACES) for _ in range(utils.N_DICE)]
             self.remaining_rolls = 2
@@ -34,7 +34,8 @@ class Game:
 
             decision = self.agents[self.current_agent_index].choose_decision(self.dice_values)
             if not utils.is_valid_decision(decision, self.agents[self.current_agent_index].scorecard, False, self.dice_values):
-                decision = utils.arbitraty_decision(self.dice_values, self.agents[self.current_agent_index].scorecard)
+                print(f"Agent {self.current_agent_index+1} has made an invalid decision. Game over.")
+                return self.get_winner()
 
             if self.current_agent_index == 0:
                 self.agents[0].scorecard[decision] = utils.compute_score(self.dice_values, decision)
@@ -46,7 +47,6 @@ class Game:
             self.current_agent_index = (self.current_agent_index + 1) % 2
 
         return self.get_winner()
-
 
     def get_winner(self):
         """Returns the winner of the game."""

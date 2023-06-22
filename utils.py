@@ -6,7 +6,7 @@ N_DICE = 5
 N_FACES = 6
 
 # Possible decisions
-UPPER_SECTION = {'Aces', 'Twos', 'Threes', 'Fours', 'Fives', 'Sixes'}
+UPPER_SECTION = {'Ones', 'Twos', 'Threes', 'Fours', 'Fives', 'Sixes'}
 LOWER_SECTION = {'3_of_a_Kind', '4_of_a_Kind', 'Full_House', 'Small_Straight', 'Large_Straight', 'Yahtzee', 'Chance'}
 ALL_DECISIONS = set().union(UPPER_SECTION, LOWER_SECTION)
 N_TURNS = len(UPPER_SECTION) + len(LOWER_SECTION)
@@ -81,7 +81,7 @@ def totalScore(scorecard):
     lower_section_sum = sum([scorecard[box] for box in LOWER_SECTION])
     return upper_section_sum + lower_section_sum + scorecard['Yahtzee_Bonus']
 
-def random_dice_to_roll()->list[bool]:
+def random_dice_to_roll()->list:
     """Arbitrarily choose the dice to be re-rolled"""
     return [2 * random() > 1 for _ in range(N_DICE)]
 

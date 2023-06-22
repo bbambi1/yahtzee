@@ -4,7 +4,7 @@ from yahtzee_agent import YahtzeeAgent
 class RandomAgent(YahtzeeAgent):
     """Agent that plays randomly."""
 
-    def roll_dice(self, dice_values, nrolls)->list[bool]:
+    def roll_dice(self, dice_values, nrolls)->list:
         return utils.random_dice_to_roll()
 
     def choose_decision(self, dice_values)->str:
