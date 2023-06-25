@@ -29,18 +29,34 @@ YAHTZEE_BONUS_VALUE = 100
 
 def is_valid_decision(decision, scorecard, is_yahtzee_bonus=False, dice_values=None):
     """Determines if a decision satisfies the rules of the game."""
-    if scorecard[decision] is not None:
+
+    # If the scorecard already has a value for the decision and this is not a bonus Yahtzee, the decision is invalid.
+    if scorecard[decision] is not None and not is_yahtzee_bonus:
         return False
+
+    # If this is a bonus Yahtzee,
     if is_yahtzee_bonus:
-        num = NUM_TO_LETTER[dice_values[0]]
-        if scorecard[num] is None:
-            return decision == num
-        elif any(scorecard[dec] is None for dec in LOWER_SECTION):
-            return (decision in LOWER_SECTION)
+        # And the number on the dice corresponds to an empty box in the upper section,
+        corresponding_number = NUM_TO_LETTER[dice_values[0]]
+        if scorecard[corresponding_number] is None:
+            # Then the decision is valid if it corresponds to the number on the dice.
+            return decision == corresponding_number
+
+        # If the corresponding box in the upper section is filled,
         else:
-            return (decision in UPPER_SECTION)
+            # And there's an empty box in the lower section,
+            if any(scorecard[dec] is None for dec in LOWER_SECTION):
+                # Then the decision is valid if it's in the lower section.
+                return decision in LOWER_SECTION
+
+            # If there are no empty boxes in the lower section,
+            else:
+                # Then the decision is valid if it's in the upper section.
+                return decision in UPPER_SECTION
+
+    # If this is not a bonus Yahtzee, the decision is valid as long as the scorecard doesn't already have a value for it.
     else:
-        return True
+        return scorecard[decision] is None
 
 def compute_score(dice_values, decision, is_yahtzee_bonus=False):
     """Computes the score obtained at the end of a turn given a particular decision."""

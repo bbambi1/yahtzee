@@ -35,6 +35,9 @@ class Game:
                     if dice_to_roll[i]:
                         self.dice_values[i] = random.randint(1, utils.N_FACES)
 
+            is_yahtzee_bonus = (self.dice_values.count(self.dice_values[0]) == utils.N_DICE 
+                            and self.agents[self.current_agent_index].scorecard['Yahtzee'] is not None)
+
             start_time = time.time()
             decision = self.agents[self.current_agent_index].choose_decision(self.dice_values)
             decision_time = time.time() - start_time
@@ -45,11 +48,14 @@ class Game:
             if not utils.is_valid_decision(decision, self.agents[self.current_agent_index].scorecard, False, self.dice_values):
                 raise utils.Penalty("Invalid decision")
 
+            if is_yahtzee_bonus:
+                self.agents[self.current_agent_index].scorecard['Yahtzee_Bonus'] += utils.YAHTZEE_BONUS_VALUE
+
             if self.current_agent_index == 0:
-                self.agents[0].scorecard[decision] = utils.compute_score(self.dice_values, decision)
+                self.agents[0].scorecard[decision] = utils.compute_score(self.dice_values, decision, is_yahtzee_bonus)
                 self.agents[1].opponent_scorecard[decision] = self.agents[0].scorecard[decision]
             else:
-                self.agents[1].scorecard[decision] = utils.compute_score(self.dice_values, decision)
+                self.agents[1].scorecard[decision] = utils.compute_score(self.dice_values, decision, is_yahtzee_bonus)
                 self.agents[0].opponent_scorecard[decision] = self.agents[1].scorecard[decision]
 
             self.current_agent_index = (self.current_agent_index + 1) % 2
