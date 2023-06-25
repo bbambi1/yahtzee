@@ -114,3 +114,8 @@ def arbitraty_decision(dice_values, scorecard)->str:
 def random_decision()->str:
     """Returns a random decision"""
     return list(ALL_DECISIONS)[floor(len(ALL_DECISIONS) * random())]
+
+class Penalty(Exception):
+    def __init__(self, penalty_type):
+        super().__init__(penalty_type)
+        self.penalty_type = penalty_type

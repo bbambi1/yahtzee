@@ -3,7 +3,8 @@ import utils
 class YahtzeeAgent:
     """General agent interface for the Yahtzee game."""
 
-    def __init__(self):
+    def __init__(self, name):
+        self.name = name
         self.scorecard = utils.BLANK_SCORECARD
         self.opponent_scorecard = utils.BLANK_SCORECARD
 

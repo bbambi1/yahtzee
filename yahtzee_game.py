@@ -1,5 +1,6 @@
 import random
 import utils
+import time
 from yahtzee_agent import YahtzeeAgent
 
 class Game:
@@ -25,17 +26,24 @@ class Game:
 
             while self.remaining_rolls > 0:
                 dice_to_roll = self.agents[self.current_agent_index].roll_dice(self.dice_values, self.remaining_rolls)
+
                 if len(dice_to_roll) != utils.N_DICE:
-                    break
+                    raise utils.Penalty("Invalid dice roll")
+
                 self.remaining_rolls -= 1
                 for i in range(utils.N_DICE):
                     if dice_to_roll[i]:
                         self.dice_values[i] = random.randint(1, utils.N_FACES)
 
+            start_time = time.time()
             decision = self.agents[self.current_agent_index].choose_decision(self.dice_values)
+            decision_time = time.time() - start_time
+
+            if decision_time > 2.0:
+                raise utils.Penalty("Exceeded time limit")
+
             if not utils.is_valid_decision(decision, self.agents[self.current_agent_index].scorecard, False, self.dice_values):
-                print(f"Agent {self.current_agent_index+1} has made an invalid decision. Game over.")
-                return self.get_winner()
+                raise utils.Penalty("Invalid decision")
 
             if self.current_agent_index == 0:
                 self.agents[0].scorecard[decision] = utils.compute_score(self.dice_values, decision)
@@ -45,8 +53,6 @@ class Game:
                 self.agents[0].opponent_scorecard[decision] = self.agents[1].scorecard[decision]
 
             self.current_agent_index = (self.current_agent_index + 1) % 2
-
-        return self.get_winner()
 
     def get_winner(self):
         """Returns the winner of the game."""
@@ -59,3 +65,10 @@ class Game:
         else:
             return None
 
+    def get_scores(self):
+        """Returns the final scores of the game."""
+        return [utils.totalScore(self.agents[0].scorecard), utils.totalScore(self.agents[1].scorecard)]
+
+    def get_penalties(self):
+        """Returns the penalties for the game."""
+        return self.penalties
