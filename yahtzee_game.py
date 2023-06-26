@@ -45,7 +45,7 @@ class Game:
             if decision_time > 2.0:
                 raise utils.Penalty("Exceeded time limit")
 
-            if not utils.is_valid_decision(decision, self.agents[self.current_agent_index].scorecard, False, self.dice_values):
+            if not utils.is_valid_decision(decision, self.agents[self.current_agent_index].scorecard, is_yahtzee_bonus, self.dice_values):
                 raise utils.Penalty("Invalid decision")
 
             if is_yahtzee_bonus:
