@@ -47,12 +47,12 @@ def is_valid_decision(decision, scorecard, is_yahtzee_bonus=False, dice_values=N
             # And there's an empty box in the lower section,
             if any(scorecard[dec] is None for dec in LOWER_SECTION):
                 # Then the decision is valid if it's in the lower section.
-                return decision in LOWER_SECTION
+                return decision in LOWER_SECTION and scorecard[decision] is None
 
             # If there are no empty boxes in the lower section,
             else:
                 # Then the decision is valid if it's in the upper section.
-                return decision in UPPER_SECTION
+                return decision in UPPER_SECTION and scorecard[decision] is None
 
     # If this is not a bonus Yahtzee, the decision is valid as long as the scorecard doesn't already have a value for it.
     else:
