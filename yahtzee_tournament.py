@@ -20,6 +20,7 @@ class Tournament:
                 wins_agent2 = 0
                 total_score_agent1 = 0
                 total_score_agent2 = 0
+                draws = 0
                 for _ in range(self.n_games):
                     game = yGame.Game(self.agents[i], self.agents[j])
                     try:

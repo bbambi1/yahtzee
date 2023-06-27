@@ -17,7 +17,7 @@ def main():
     agents = [agent_random, agent_bienvenu, agent_lucas, agent_nikolas, agent_victor, agent_ulysse]
 
     # Create the tournament
-    tournament = Tournament(agents, n_games=10)
+    tournament = Tournament(agents, n_games=100)
 
     # Run the tournament
     tournament.run_games()
