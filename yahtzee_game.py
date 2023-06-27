@@ -35,8 +35,7 @@ class Game:
                     if dice_to_roll[i]:
                         self.dice_values[i] = random.randint(1, utils.N_FACES)
 
-            is_yahtzee_bonus = (self.dice_values.count(self.dice_values[0]) == utils.N_DICE 
-                            and self.agents[self.current_agent_index].scorecard['Yahtzee'] is not None)
+            is_yahtzee_bonus = False
 
             start_time = time.time()
             decision = self.agents[self.current_agent_index].choose_decision(self.dice_values)
